@@ -6,7 +6,7 @@
  * http://720kb.github.io/angular-socialshare
  * 
  * MIT license
- * Wed Sep 27 2017
+ * Thu Sep 28 2017
  */
 /*global angular*/
 /*eslint no-loop-func:0, func-names:0*/
@@ -527,8 +527,13 @@
 
       var href = 'fb-messenger://share?link=' + encodeURIComponent(attrs.socialshareUrl || $window.location.href);
 
-      element.attr('href', href);
-      element.attr('target', '_top');
+      if(element)
+      {
+        element.attr('href', href);
+        element.attr('target', '_top');
+      }else{
+        $window.open(href,'_system');
+      }
   }
     , manageTwitterShare = function manageTwitterShare($window, attrs) {
       var urlString = 'https://www.twitter.com/intent/tweet?';
@@ -800,9 +805,13 @@
 
       var href = 'whatsapp://send?text=' + encodeURIComponent(attrs.socialshareText) + '%0A' + encodeURIComponent(attrs.socialshareUrl || $window.location.href);
 
-      element.attr('href', href);
-      element.attr('target', '_top');
-
+      if(element)
+      {
+        element.attr('href', href);
+        element.attr('target', '_top');
+      }else{
+        $window.open(href,'_system');
+      }
     }
     , manageSmsShare = function smsShare($window, attrs, element) {
 
@@ -820,8 +829,13 @@
 
       urlString = 'sms:' + toPhoneNumber + '?&body=' + body;
 
-      element.attr('href', urlString);
-      element.attr('target', '_blank');
+      if(element)
+      {
+        element.attr('href', urlString);
+        element.attr('target', '_blank');
+      }else{
+        $window.open(href,'_system');
+      }
     }
     , manageViberShare = function manageViberShare($window, attrs, element) {
 
@@ -873,7 +887,7 @@
       this.facebookShare = manageFacebookShare;
       this.twitterShare = manageTwitterShare;
       //**** Fb Messenger can't open without an element clicked (href)
-      //this.facebookMessengerShare = facebookMessengerShare;
+      this.facebookMessengerShare = facebookMessengerShare;
       this.stumbleuponShare = manageStumbleuponShare;
       this.pinterestShare = managePinterestShare;
       this.googleShare = manageGooglePlusShare;
@@ -895,7 +909,7 @@
       //**** viber can't share without an element clicked (href)
       //this.viberShare = manageViberShare;
       //**** whatsapp can't share without an element clicked (href)
-      //this.whatsappShare = manageWhatsappShare;
+      this.whatsappShare = manageWhatsappShare;
       this.skypeShare = skypeShare;
       this.smsShare = manageSmsShare;
       this.weiboShare = weiboShare;
@@ -913,6 +927,10 @@
           }
           case 'facebook': {
             this.facebookShare($window, serviceShareConf.attrs);
+            break;
+          }
+          case 'facebook-messenger': {
+            this.facebookMessengerShare($window, serviceShareConf.attrs);
             break;
           }
           case 'twitter': {
@@ -997,6 +1015,10 @@
           }
           case 'weibo': {
             this.weiboShare($window, serviceShareConf.attrs);
+            break;
+          }
+          case 'whatsapp': {
+            this.whatsappShare($window, serviceShareConf.attrs);
             break;
           }
           default: {
