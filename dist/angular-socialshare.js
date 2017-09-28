@@ -1,6 +1,6 @@
 /*
  * angular-socialshare
- * 2.3.11
+ * 2.4.0
  * 
  * A social media url and content share module for angularjs.
  * http://720kb.github.io/angular-socialshare
@@ -834,7 +834,7 @@
         element.attr('href', urlString);
         element.attr('target', '_blank');
       }else{
-        $window.open(href,'_system');
+        $window.open(urlString,'_system');
       }
     }
     , manageViberShare = function manageViberShare($window, attrs, element) {
